@@ -185,5 +185,43 @@ namespace Test_Taste_Console_Application.Domain.Services
                 --------------------+--------------------------------------------------
             */
         }
+
+
+        //Added Method
+        public void OutputAllPlanetsAndTheirAverageMoonTemperatureToConsole()
+        {
+            Console.WriteLine("Loading planets and their average moon temperatures...");
+
+            var planets = _planetService.GetAllPlanets().Where(p => p.HasMoons()).ToArray();
+            if (!planets.Any())
+            {
+                Console.WriteLine(OutputString.NoPlanetsFound);
+                return;
+            }
+
+            var columnSizes = new[] { 25, 30 };
+            var columnLabels = new[]
+            {
+                "Planet Id", "Average Moon Temperature (K)"
+            };
+
+            ConsoleWriter.CreateHeader(columnLabels, columnSizes);
+
+            foreach (var planet in planets)
+            {
+                ConsoleWriter.CreateText(
+                    new string[]
+                    {
+                CultureInfoUtility.TextInfo.ToTitleCase(planet.Id),
+                planet.AverageMoonTemperature.ToString("0.00")
+                    },
+                    columnSizes);
+            }
+
+            ConsoleWriter.CreateLine(columnSizes);
+            ConsoleWriter.CreateEmptyLines(2);
+
+            Console.WriteLine("Output completed successfully.");
+        }
     }
 }

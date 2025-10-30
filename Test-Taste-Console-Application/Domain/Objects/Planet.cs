@@ -15,6 +15,27 @@ namespace Test_Taste_Console_Application.Domain.Objects
             get => 0.0f;
         }
 
+        //Added
+        public double AverageMoonTemperature
+        {
+            get
+            {
+                if (Moons == null || Moons.Count == 0)
+                    return 0.0f;
+
+                double total = 0.0;
+                int count = 0;
+                foreach (var moon in Moons)
+                {
+                    total += moon.AverageTemperature;
+                    count++;
+                }
+
+                return count > 0 ? total / count : 0.0;
+            }
+        }
+        //
+
         public Planet(PlanetDto planetDto)
         {
             Id = planetDto.Id;
